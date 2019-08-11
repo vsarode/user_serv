@@ -34,6 +34,7 @@ def login():
 
     user_objects = User.objects.filter(username=username)
 
+    #comment line
     if not user_objects:
         return "<h1>Invalid username !!</h1>"
     if user_objects[0].password == password:
