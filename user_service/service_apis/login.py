@@ -19,7 +19,8 @@ class Login(Resource):
         return jsonify({"logins": [get_login_dict(x) for x in login_objects]})
 
     def put(self, token):
-        token = request.headers.get('token')
+        print "helllpoooooo"
+        # token = request.headers.get('token')
         if not token and not is_authenticated(token):
             return "<h1> Unauthenticated User!!</h1>"
         data = request.args

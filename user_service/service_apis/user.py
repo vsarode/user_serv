@@ -14,10 +14,9 @@ class User(Resource):
         return jsonify({"user": get_user_dict(user_object)})
 
     def get(self, username=None):
-        # print "hello"
-        # token = request.headers.get('token')
-        # if not token and not is_authenticated(token):
-        #     return "<h1> Unauthenticated User!!</h1>"
+        token = request.headers.get('token')
+        if not token and not is_authenticated(token):
+            return "<h1> Unauthenticated User!!</h1>"
         if username:
             user = usr.objects.get(username=username)
             return jsonify({"user": get_user_dict(user)})
