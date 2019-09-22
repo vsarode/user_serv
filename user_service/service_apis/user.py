@@ -11,7 +11,9 @@ class User(Resource):
     def post(self):
         data = request.get_json()
         user_object = user_handler.create_user(data)
-        return jsonify({"user": get_user_dict(user_object)})
+        response_dict = get_user_dict(user_object)
+        response_json = jsonify({"user": response_dict})
+        return response_json
 
     def get(self, username=None):
         token = request.headers.get('token')

@@ -10,7 +10,9 @@ class Login(Resource):
         data = request.get_json()
         return login_handler.create_login(data)
 
-    def get(self):
+    def get(self, token=None):
+        if token:
+            return login_handler.get_login(token)
         token = request.headers.get('token')
         if not token and not is_authenticated(token):
             return "<h1> Unauthenticated User!!</h1>"
@@ -19,7 +21,8 @@ class Login(Resource):
         return jsonify({"logins": [get_login_dict(x) for x in login_objects]})
 
     def put(self, token):
-        print "helllpoooooo"
+        token = request.cookies.get("token")
+        print "token is---->", token
         # token = request.headers.get('token')
         if not token and not is_authenticated(token):
             return "<h1> Unauthenticated User!!</h1>"

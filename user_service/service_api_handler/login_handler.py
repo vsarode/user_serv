@@ -1,7 +1,8 @@
-from datetime import datetime
+import json
 import uuid
+from datetime import datetime
 
-from flask import jsonify
+from flask import make_response
 
 from user_service.db.user_models.models import User, Login
 from user_service.utils.login import get_login_dict
@@ -44,10 +45,21 @@ def create_login(data):
         is_logged_in, login_object = is_already_logged_in(user_object)
 
         if is_logged_in:
-            login_object=login_object
+            login_object = login_object
         else:
             login_object = Login.objects.create(user=user_object, token=str(uuid.uuid4()))
 
-        return jsonify({"login": get_login_dict(login_object)})
+
+        response = make_response(json.dumps({"login": get_login_dict(login_object)}))
+        response.mimetype = "application/json"
+        response.set_cookie("token", login_object.token)
+
+        return response
     else:
         return "<h1> Invalid password !!</h1>"
+def get_login(token):
+    try:
+        login_object = Login.objects.get(token=token)
+    except:
+        return {"success": False}
+    return get_login_dict(login_object)
